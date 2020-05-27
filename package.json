@@ -2,14 +2,18 @@
   "name": "cortana-discord-bot",
   "version": "1.0.0",
   "description": "This is the Cortana Bot similar to Original GroupMe Cortana Bot",
-  "main": "index.js",
+  "main": "Cortana.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node Cortana.js",
+    "dev": "nodemon Cortana.js" 
   },
-  "author": "",
+  "author": "Rayleigh Thai",
   "license": "ISC",
   "dependencies": {
     "discord.js": "^12.2.0",
     "discord.js-commando": "^0.10.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
   }
 }

@@ -4,8 +4,7 @@
   "description": "This is the Cortana Bot similar to Original GroupMe Cortana Bot",
   "main": "Cortana.js",
   "scripts": {
-    "start": "node Cortana.js"//,
-    //"dev": "nodemon Cortana.js" 
+    "start": "node Cortana.js"
   },
   "author": "Rayleigh Thai",
   "license": "ISC",

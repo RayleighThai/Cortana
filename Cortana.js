@@ -1,8 +1,4 @@
 const Discord = require('discord.js');
-
-//const Canvas = require('canvas');
-
-
 const bot = new Discord.Client();
 
 //const image = File
@@ -57,18 +53,13 @@ bot.on('message', message => {
         message.reply('careful');
     }
 
-    if (message.content.toLowerCase() === 'ping')
-    {
-        //message.reply('pong');
+    if (message.content.toLowerCase() === 'ping'){
         message.channel.send('pong');
     }
 
-    if (message.content.toLowerCase() === 'beep')
-    {
-        //message.reply('boop');
+    if (message.content.toLowerCase() === 'beep'){
         message.channel.send('boop');
     }
-
 
     if (!message.content.startsWith(PREFIX) || message.author.bot) return;
 
@@ -88,8 +79,53 @@ bot.on('message', message => {
     {
         let context = args.join(' ');
         const PSACHANNEL = bot.channels.cache.get('713852858512179221');
-        PSACHANNEL.send({files: ['./image/triangle-logo.png']}).then(message => {
+        PSACHANNEL.send({files: ['./image/Announment_Banner.png']}).then(message => {
             PSACHANNEL.send(context)});
+    }
+
+    // Ban Command
+    else if (command === 'ban')
+    {
+        if (message.member.roles.cache.some(role => role.name === 'Moderator'))
+        {
+            const user = message.mentions.users.first();
+            // If we have a user mentioned
+            if (user) {
+                // Now we get the member from the user
+                const member = message.guild.member(user);
+                // If the member is in the guild
+                if (member) {
+                    // Kick the member
+                    //* Make sure you run this on a member, not a user!
+                    //* There are big differences between a user and a member
+                    member
+                        .kick('Optional reason that will display in the audit logs')
+                        .then(() => {
+                        // We let the message author know we were able to kick the person
+                        message.reply(`Successfully kicked ${user.tag}`);
+                    })
+                .catch(err => {
+                // An error happened
+                // This is generally due to the bot not being able to kick the member,
+                // either due to missing permissions or role hierarchy
+                message.reply('I was unable to kick the member');
+                // Log the error
+                console.error(err);
+              });
+            }  
+            else {
+                // The mentioned user isn't in this guild
+                message.reply("That user isn't in this Server!");
+            }
+            // Otherwise, if no user was mentioned
+            } 
+             else {
+                message.reply("You didn't mention the user to kick!");
+            }
+        }
+        else{
+            message.reply("You have no power here");
+        }
     }
 
     //Kick COMMAND
@@ -123,7 +159,7 @@ bot.on('message', message => {
             }  
             else {
                 // The mentioned user isn't in this guild
-                message.reply("That user isn't in this guild!");
+                message.reply("That user isn't in this Server!");
             }
             // Otherwise, if no user was mentioned
             } 
@@ -135,11 +171,6 @@ bot.on('message', message => {
             message.reply("You have no power here");
         }
     }
-
-
-
-
-
 
     else{
         message.channel.send('Not Recognized Command. Please use >help for manual.');

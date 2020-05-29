@@ -35,7 +35,7 @@ bot.on('message', message => {
             //console.log('user agreed');
             message.delete().then(msg => console.log('deleted from ${msg.author.username}')).catch(console.error);
             
-            let NEWMEMBERROLE = message.member.guild.roles.cache.find(role => role.name === "New Member");
+            let NEWMEMBERROLE = message.member.guild.roles.cache.find(role => role.name === "Newcomer");
             //member.guild.roles.cache.find(role => role.name === 'New Member'); 
             message.member.roles.add(NEWMEMBERROLE);
 
@@ -78,7 +78,7 @@ bot.on('message', message => {
     else if (command === 'psa' ) 
     {
         let context = args.join(' ');
-        const PSACHANNEL = bot.channels.cache.get('713852858512179221');
+        const PSACHANNEL = bot.channels.cache.get('713802419695386707');
         PSACHANNEL.send({files: ['./image/Announment_Banner.png']}).then(message => {
             PSACHANNEL.send(context)});
     }

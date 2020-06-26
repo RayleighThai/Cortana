@@ -7,7 +7,7 @@ const bot = new Discord.Client();
 bot.on('ready', () => {
     console.log('Cortana is Running...');
     // Bot status
-    bot.user.setActivity('Please help Ray/Thuan' );
+    bot.user.setActivity('ReEeEeEeE' );
 })
 
 //Welcome message upon join server and ONLY send to specific channel
@@ -22,8 +22,7 @@ bot.on('message', message => {
     const msg = message.content; // user message
     const RULECHANNEL = message.guild.channels.cache.find(c => c.name === "rules");
 
-
-    console.log("someone is typing\n")
+    console.log("someone is typing")
 
     //enforce newcomer to read the rules and agree upon joining
     if (message.channel.name == "rules")
@@ -32,24 +31,26 @@ bot.on('message', message => {
         if (message.content.toLowerCase() == 'i agree')
         {
            // console.log('fuck this shit \n');
-            //console.log('user agreed');
-            message.delete().then(msg => console.log('deleted from ${msg.author.username}')).catch(console.error);
+            console.log('user agreed');
+            message.delete().then(msg => console.log('User Agreed')).catch(console.error);
             
             let NEWMEMBERROLE = message.member.guild.roles.cache.find(role => role.name === "Newcomer");
             //member.guild.roles.cache.find(role => role.name === 'New Member'); 
             message.member.roles.add(NEWMEMBERROLE);
-
         }
         else
         {
-           message.delete().then(msg => console.log('deleted from ${msg.username}')).catch(console.error);
+            message.delete()
+             .then(msg => console.log(`Deleted message from ${msg.author.username}`))
+             .catch(console.error);
+            console.log('Something ___________________________________ Here');
         }
     }
 
     // Check for Bad words.
     const BADWORDS = ['fuck', 'shit', 'cunt', 'retard']
     if ( BADWORDS.some(word => message.content.toLowerCase().includes(word)) ){
-        message.delete().then(msg => console.log('deleted from ' + $message.username)).catch(console.error);
+        message.delete().then(msg => console.log('deleted from ')).catch(console.error);
         message.reply('careful');
     }
 
@@ -86,6 +87,10 @@ bot.on('message', message => {
     // Ban Command
     else if (command === 'ban')
     {
+        //If the Command kick is not in the server (DM type of message), simply return.
+        //if (!message.guild) return;
+
+        // Check for the Freaking ROLE!
         if (message.member.roles.cache.some(role => role.name === 'Moderator'))
         {
             const user = message.mentions.users.first();
@@ -130,6 +135,10 @@ bot.on('message', message => {
 
     //Kick COMMAND
     else if (command === 'kick'){
+        //If the Command kick is not in the server (DM type of message), simply return.
+        //if (!message.guild) return;
+
+        // Check for the Freaking ROLE!
         if (message.member.roles.cache.some(role => role.name === 'Moderator'))
         {
             const user = message.mentions.users.first();
@@ -155,7 +164,7 @@ bot.on('message', message => {
                 message.reply('I was unable to kick the member');
                 // Log the error
                 console.error(err);
-              });
+                });
             }  
             else {
                 // The mentioned user isn't in this guild
@@ -190,6 +199,15 @@ bot.on('error', e => {
     console.log(e);
 });
 */
+
+//BASIC logs for server diagnose/information
+bot.on('guildMemberAdd', member => {
+    console.log('User ' + member.user.username + " has joined the server!");
+});
+
+bot.on('guildMemberRemove', member => {
+    console.log('User ' + member.user.username + " has left the server!");
+});
 
 bot.login("NjM1OTg0OTkwMzU3OTQ2Mzc5.XsipuQ.t_0LsY0E2uDsm9ptOrGdXY5I0oU"); 
 

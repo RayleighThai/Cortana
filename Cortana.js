@@ -39,7 +39,7 @@ bot.on('message', message => {
 
     // Enforce newcomer to read the rules and agree upon joining
     // Enforce Users to agree to the conditions. Delete the typed message(s) and Grant them Role of 'Newcomer' 
-    if (message.channel.name == "rules")
+    if (message.channel.name.toLowerCase() == "rules")
     {
         if (message.content.toLowerCase() == 'i agree'){
             message.delete().then(msg => console.log('User ${msg.author.username} Agreed to rules')).catch(console.error);
@@ -51,16 +51,18 @@ bot.on('message', message => {
             message.delete()
              .then(msg => console.log(`Deleted message from ${msg.author.username}`))
              .catch(console.error);
-            console.log('Something ___________________________________ Here');
+            console.log('User ${msg.author.username} try to type something other than I AGREE.');
         }
     }
 
     // Check for Bad words.
+    /* Since this is too highly enforced. Moderators will be checking the server comments. GOOD LUCK to Y'all LOL!
     const BADWORDS = ['fuck', 'shit', 'cunt', 'retard']
     if ( BADWORDS.some(word => message.content.toLowerCase().includes(word)) ){
         message.delete().then(msg => console.log('deleted from ')).catch(console.error);
         message.reply('careful');
     }
+    */
 
     if (message.content.toLowerCase() === 'ping'){
         message.channel.send('pong');
@@ -81,9 +83,7 @@ bot.on('message', message => {
 
     if (command === 'help')
     {
-        message.channel.send('This is the Help section of the Triangle\'s Cortana Bot. \n
-            There are few functions you can use at this time. For basic, there are this Help //command, Kick command, Ban command, and PSA command\.
-            Something here. I ddk ');
+        message.channel.send('This is the Help section of the Triangle\'s Cortana Bot\. \n There are few functions you can use at this time. For basic, there are this Help //command, Kick command, Ban command, and PSA command\. Something here. I ddk ');
         message.channel.send('Well hello there, something there idk \n something here');
     }
 

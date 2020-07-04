@@ -1,16 +1,29 @@
 const Discord = require('discord.js');
 const bot = new Discord.Client();
 
-//const image = File
+const activities_list = [
+    "with the configurations.", 
+    "with the developers console - Ask Ray/Thuan.",
+    "with some code.", 
+    "with JavaScript with Ray/Thuan",
+    "with Green's Theorem",
+    "with Thermo Dynamics",
+    "with Steel Construction Manual."
+    // Add more if needed. 
+    ]; // creates an arraylist containing phrases you want your bot to switch through.
 
 // Bot is running
 bot.on('ready', () => {
     console.log('Cortana is Running...');
     // Bot status
-    bot.user.setActivity('ReEeEeEeE' );
+    //bot.user.setActivity('ReEeEeEeE' );
+    setInterval(() => {
+        const index = Math.floor(Math.random() * (activities_list.length - 1) + 1); // generates a random number between 1 and the length of the activities array list (in this case 5).
+        client.user.setActivity(activities_list[index]); // sets bot's activities to one of the phrases in the arraylist.
+    }, 1800000); // Runs this every 10 seconds.
 })
 
-//Welcome message upon join server and ONLY send to specific channel
+// Welcome message upon join server and ONLY send to specific channel
 // Have rule channel is available to everyone to go through the rule and type i agree prior to join texts
 
 const PREFIX = '>'; // prefix like terminal lines.... Come on now, we mostly engineers so should understand this
@@ -24,22 +37,17 @@ bot.on('message', message => {
 
     console.log("someone is typing")
 
-    //enforce newcomer to read the rules and agree upon joining
+    // Enforce newcomer to read the rules and agree upon joining
+    // Enforce Users to agree to the conditions. Delete the typed message(s) and Grant them Role of 'Newcomer' 
     if (message.channel.name == "rules")
     {
-        //console.log('hereasdfsdafa sfadsfas \n');
-        if (message.content.toLowerCase() == 'i agree')
-        {
-           // console.log('fuck this shit \n');
-            console.log('user agreed');
-            message.delete().then(msg => console.log('User Agreed')).catch(console.error);
-            
+        if (message.content.toLowerCase() == 'i agree'){
+            message.delete().then(msg => console.log('User ${msg.author.username} Agreed to rules')).catch(console.error);
             let NEWMEMBERROLE = message.member.guild.roles.cache.find(role => role.name === "Newcomer");
             //member.guild.roles.cache.find(role => role.name === 'New Member'); 
             message.member.roles.add(NEWMEMBERROLE);
         }
-        else
-        {
+        else{
             message.delete()
              .then(msg => console.log(`Deleted message from ${msg.author.username}`))
              .catch(console.error);
@@ -73,6 +81,9 @@ bot.on('message', message => {
 
     if (command === 'help')
     {
+        message.channel.send('This is the Help section of the Triangle\'s Cortana Bot. \n
+            There are few functions you can use at this time. For basic, there are this Help //command, Kick command, Ban command, and PSA command\.
+            Something here. I ddk ');
         message.channel.send('Well hello there, something there idk \n something here');
     }
 
@@ -84,7 +95,7 @@ bot.on('message', message => {
             PSACHANNEL.send(context)});
     }
 
-    // Ban Command
+    // Ban COMMAND
     else if (command === 'ban')
     {
         //If the Command kick is not in the server (DM type of message), simply return.
@@ -133,7 +144,7 @@ bot.on('message', message => {
         }
     }
 
-    //Kick COMMAND
+    // Kick COMMAND
     else if (command === 'kick'){
         //If the Command kick is not in the server (DM type of message), simply return.
         //if (!message.guild) return;
@@ -202,11 +213,11 @@ bot.on('error', e => {
 
 //BASIC logs for server diagnose/information
 bot.on('guildMemberAdd', member => {
-    console.log('User ' + member.user.username + " has joined the server!");
+    console.log('User *' + member.user.username + "* has joined the server!");
 });
 
 bot.on('guildMemberRemove', member => {
-    console.log('User ' + member.user.username + " has left the server!");
+    console.log('User *' + member.user.username + "* has left the server!");
 });
 
 bot.login("NjM1OTg0OTkwMzU3OTQ2Mzc5.XsipuQ.t_0LsY0E2uDsm9ptOrGdXY5I0oU"); 

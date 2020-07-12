@@ -20,7 +20,7 @@ bot.on('ready', () => {
     setInterval(() => {
         const index = Math.floor(Math.random() * (activities_list.length - 1) + 1); // generates a random number between 1 and the length of the activities array list (in this case 5).
         bot.user.setActivity(activities_list[index]); // sets bot's activities to one of the phrases in the arraylist.
-    }, 1800000); // Runs this every 10 seconds.
+    }, 1800000); // Runs this every 30 Minutes.
 })
 
 // Welcome message upon join server and ONLY send to specific channel
@@ -83,11 +83,11 @@ bot.on('message', message => {
 
     if (command === 'help')
     {
-        message.channel.send(`This is the Help section of the Triangle's Cortana Bot. \n \n
-            There are few functions you can use at this time. For basic, there are this Help command, Kick command, Ban command, and PSA command. \n\n
-            --Help Command in which focus on helping YOU understand how to utilize this bot at full usage-- \n\n
+        message.channel.send(`This is the Help section of the Triangle's Cortana Bot. \n
+            There are few functions you can use at this time. For basic, there are this Help command, Kick command, Ban command, and PSA command. \n
+            --Help Command in which focus on helping YOU understand how to utilize this bot at full usage-- \n
             --Kick and Ban Command are for more Priviledge Roles such as ADMINS and Moderators. The reason for that is to prevent member abuse 
-            Kick/Ban Command without authorization or prior review. \n\n
+            Kick/Ban Command without authorization or prior review. \n
             --PSA Command sending out Announcement information that will be highly important to everyone. Thus, DO NOT abuse this command for 
             something simple like Tagging/Mentions. Please leave this command to VP Recruitment or Moderators. \n\n
 
@@ -199,7 +199,8 @@ bot.on('message', message => {
             message.reply("You have no power here");
         }
     }
-
+    
+    // Not Recognized Command
     else{
         message.channel.send('Not Recognized Command. Please use >help for manual.');
     }

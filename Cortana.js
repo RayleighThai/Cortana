@@ -1,25 +1,27 @@
 const Discord = require('discord.js');
 const bot = new Discord.Client();
 
-const activities_list = [
-    "with the configurations.", 
-    "with the developers console - Ask Ray/Thuan.",
-    "with some code.", 
-    "with JavaScript with Ray/Thuan",
-    "with Green's Theorem",
-    "with Thermo Dynamics",
-    "with Steel Construction Manual."
-    // Add more if needed. 
-    ]; // creates an arraylist containing phrases you want your bot to switch through.
 
 // Bot is running
 bot.on('ready', () => {
     console.log('Cortana is Running...');
     // Bot status
     //bot.user.setActivity('ReEeEeEeE' );
+    const activities_list = [
+        "with the configurations.", 
+        "with the developers console - Ask Ray/Thuan.",
+        "with some code.", 
+        "with JavaScript with Ray/Thuan",
+        "with Green's Theorem",
+        "with Thermo Dynamics",
+        "with Steel Construction Manual."
+        // Add more if needed. 
+        ]; // creates an arraylist containing phrases you want your bot to switch through.
+    
+
     setInterval(() => {
-        const index = Math.floor(Math.random() * (activities_list.length - 1) + 1); // generates a random number between 1 and the length of the activities array list (in this case 5).
-        bot.user.setActivity(activities_list); // sets bot's activities to one of the phrases in the arraylist.
+        const status = activities_list[Math.floor(Math.random() * activities_list.length)]; // generates a random number between 1 and the length of the activities array list (in this case 5).
+        bot.user.setActivity(status); // sets bot's activities to one of the phrases in the arraylist.
     }, 1800000); // Runs this every 30 Minutes.
 })
 

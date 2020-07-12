@@ -22,7 +22,7 @@ bot.on('ready', () => {
     setInterval(() => {
         const status = activities_list[Math.floor(Math.random() * activities_list.length)]; // generates a random number between 1 and the length of the activities array list (in this case 5).
         bot.user.setActivity(status); // sets bot's activities to one of the phrases in the arraylist.
-    }, 1800); // Runs this every 30 Minutes.
+    }, 180000); // Runs this every 30 Minutes.
 })
 
 // Welcome message upon join server and ONLY send to specific channel

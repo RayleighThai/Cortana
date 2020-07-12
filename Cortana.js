@@ -84,15 +84,14 @@ bot.on('message', message => {
     if (command === 'help')
     {
         message.channel.send(`This is the Help section of the Triangle's Cortana Bot. \n
-            There are few functions you can use at this time. For basic, there are this Help command, Kick command, Ban command, and PSA command. \n
-            --Help Command in which focus on helping YOU understand how to utilize this bot at full usage-- \n
+            There are few functions you can use at this time. For basic, there are this Help command, Kick command, Ban command, and PSA command. 
+            --Help Command in which focus on helping YOU understand how to utilize this bot at full usage-- 
             --Kick and Ban Command are for more Priviledge Roles such as ADMINS and Moderators. The reason for that is to prevent member abuse 
-            Kick/Ban Command without authorization or prior review. \n
+            Kick/Ban Command without authorization or prior review. 
             --PSA Command sending out Announcement information that will be highly important to everyone. Thus, DO NOT abuse this command for 
-            something simple like Tagging/Mentions. Please leave this command to VP Recruitment or Moderators. \n\n
+            something simple like Tagging/Mentions. Please leave this command to VP Recruitment or Moderators. \n
 
             *** That is as much of information for help page as of right now. If you have any questions, comments, or concerns, please do address it to Admins and Moderators. ***`);
-        //message.channel.send('Well hello there, something there idk \n something here');
     }
 
     else if (command === 'psa' ) 

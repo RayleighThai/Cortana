@@ -42,7 +42,7 @@ bot.on('message', message => {
     if (message.channel.name.toLowerCase() == "rules")
     {
         if (message.content.toLowerCase() == 'i agree'){
-            message.delete().then(msg => console.log('User ${msg.author.username} Agreed to rules')).catch(console.error);
+            message.delete().then(msg => console.log(`User ${msg.author.username} Agreed to rules`)).catch(console.error);
             let NEWMEMBERROLE = message.member.guild.roles.cache.find(role => role.name === "Newcomer");
             //member.guild.roles.cache.find(role => role.name === 'New Member'); 
             message.member.roles.add(NEWMEMBERROLE);
@@ -51,13 +51,13 @@ bot.on('message', message => {
             message.delete()
              .then(msg => console.log(`Deleted message from ${msg.author.username}`))
              .catch(console.error);
-            console.log('User ${msg.author.username} try to type something other than I AGREE.');
+            console.log(`User ${msg.author.username} try to type something other than I AGREE.`);
         }
     }
 
     // Check for Bad words.
     /* Since this is too highly enforced. Moderators will be checking the server comments. GOOD LUCK to Y'all LOL!
-    const BADWORDS = ['fuck', 'shit', 'cunt', 'retard']
+    const BADWORDS = ['fuck', 'shit', 'cunt', 'retard']  // Don't ask me. I suck at cussing so These are common words for me.
     if ( BADWORDS.some(word => message.content.toLowerCase().includes(word)) ){
         message.delete().then(msg => console.log('deleted from ')).catch(console.error);
         message.reply('careful');
@@ -83,14 +83,22 @@ bot.on('message', message => {
 
     if (command === 'help')
     {
-        message.channel.send('This is the Help section of the Triangle\'s Cortana Bot\. \n There are few functions you can use at this time. For basic, there are this Help //command, Kick command, Ban command, and PSA command\. Something here. I ddk ');
-        message.channel.send('Well hello there, something there idk \n something here');
+        message.channel.send(`This is the Help section of the Triangle's Cortana Bot. \n \n
+            There are few functions you can use at this time. For basic, there are this Help command, Kick command, Ban command, and PSA command. \n\n
+            --Help Command in which focus on helping YOU understand how to utilize this bot at full usage-- \n\n
+            --Kick and Ban Command are for more Priviledge Roles such as ADMINS and Moderators. The reason for that is to prevent member abuse 
+            Kick/Ban Command without authorization or prior review. \n\n
+            --PSA Command sending out Announcement information that will be highly important to everyone. Thus, DO NOT abuse this command for 
+            something simple like Tagging/Mentions. Please leave this command to VP Recruitment or Moderators. \n\n
+
+            *** That is as much of information for help page as of right now. If you have any questions, comments, or concerns, please do address it to Admins and Moderators. ***`);
+        //message.channel.send('Well hello there, something there idk \n something here');
     }
 
     else if (command === 'psa' ) 
     {
         let context = args.join(' ');
-        const PSACHANNEL = bot.channels.cache.get('713802419695386707');
+        const PSACHANNEL = bot.channels.cache.get('731657751234871316');
         PSACHANNEL.send({files: ['./image/Announment_Banner.png']}).then(message => {
             PSACHANNEL.send(context)});
     }

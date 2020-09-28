@@ -1,6 +1,10 @@
 const Discord = require('discord.js');
 const bot = new Discord.Client();
 
+// music bot;
+const ytdl = require("ytdl-core");
+
+// Discord.js version 1.12
 
 // Bot is running
 bot.on('ready', () => {
@@ -32,7 +36,7 @@ const PREFIX = '>'; // prefix like terminal lines.... Come on now, we mostly eng
 
 // bot.on('','' =>{});
 
-bot.on('message', message => {
+bot.on('message', async message => {
    // const sender = message.author; // person send the message
     const msg = message.content; // user message
     const RULECHANNEL = message.guild.channels.cache.find(c => c.name === "rules");
@@ -81,6 +85,78 @@ bot.on('message', message => {
     
 
     // if (command = '' ) 
+
+    switch (args[0]) {
+        case 'play':
+
+        function play(connection, message) {
+            var server = servers[message.guild.id];
+
+            server.dispatcher = connection.playStrean(ytdl(server.queue[0], {filter: "audioonly"}));
+
+            server.queue.shift();
+
+            server.dispatcher.on("end", function(){
+                if (server.queue[0]) {
+                    play(connection, message);
+                }
+                else {
+                    connection.disconnect();
+                }
+            })
+        }
+
+            if (!args[1]){
+                message.channel.send("Please include a link!");
+                return;
+            }
+            if (!message.member.voiceChannel){
+                message.channel.send("You must be in a channel to play the bot!");
+                return;
+            }
+            if (!Permissions.has('CONNECT')) return message.channel.send("This bot does NOT have permissions to connect to the voice channel")
+            if (!Permissions.has('SPEAK')) return message.channel.send("This bot does NOT have permissions to play sound ons the voice channel")
+
+
+
+
+
+            if (!servers[message.guild.id]) servers[message.guild.id] = {
+                queue: []
+            }
+
+            var server = servers[message.guild.id];
+
+            server.queue.push(args[1]);
+
+            if (!message.guild.voiceConnection) message.member.voiceChannel.join().then(function(connection) {
+                play(connection.message);
+            })
+        break;
+
+        case "skip":
+            var server = servers[message.guild.id];
+            if (server.dispatcher) server.dispatcher.end();
+            message.channel.send("Skipping the song!");
+        break;
+
+        case 'stop':
+            var server = servers[message.guild.id];
+            if (message.guild.voiceConnection){
+                for (var i = server.queue.length -1; i >= 0 ; i--){
+                    server.queue.splice(i,1);
+                }
+
+                server.dispatcher.end();
+                message.channel.send("Ending the queue. Leave the channel.");
+
+                console.log("stopped the queue");
+
+            }
+
+            if (message.guild.connection) message.guild.voiceConnection.disconnect();
+        break;
+    }
 
 
     if (command === 'help')
@@ -205,20 +281,6 @@ bot.on('message', message => {
     }
 })
 
-/*
-bot.on('debug', e => {
-    console.log(e);
-});
-
-bot.on('warn', e => {
-    console.log(e);
-});
-
-bot.on('error', e => {
-    console.log(e);
-});
-*/
-
 //BASIC logs for server diagnose/information
 bot.on('guildMemberAdd', member => {
     console.log('User *' + member.user.username + "* has joined the server!");
@@ -229,4 +291,3 @@ bot.on('guildMemberRemove', member => {
 });
 
 bot.login("NjM1OTg0OTkwMzU3OTQ2Mzc5.XsipuQ.t_0LsY0E2uDsm9ptOrGdXY5I0oU"); 
-

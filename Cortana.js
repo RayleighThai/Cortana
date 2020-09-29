@@ -3,6 +3,7 @@ const bot = new Discord.Client();
 
 // music bot;
 const ytdl = require("ytdl-core");
+const queue = new Map();
 
 // Discord.js version 1.12
 
@@ -79,98 +80,77 @@ bot.on('message', async message => {
     }
 
     if (!message.content.startsWith(PREFIX) || message.author.bot) return;
-
-    const args = message.content.slice(PREFIX.length).trim().split(/ +/g);
-    const command = args.shift().toLowerCase();
     
 
+    const args = message.content.substring(PREFIX.length).split(" ")
+
+    const voiceChannel = message.member.voice.channel;
+    const serverQueue = queue.get(message.guild.id);
     // if (command = '' ) 
 
-    switch (args[0]) {
-        case 'play':
+    console.log()
 
-        function play(connection, message) {
-            var server = servers[message.guild.id];
+    if (message.content.startsWith(`${PREFIX}play`)){
+        if (!voiceChannel) return message.channel.send("You need to be in voice channel to play music")
+        const permissions = voiceChannel.permissionsFor(message.client.user);
+        if (!permissions.has('CONNECT')) return message.channel.send("I Do NOT have permissions to connect to the voice channel")
+        if (!permissions.has('SPEAK')) return message.channel.send("I Do NOT have permissions to speak on the voice channel")
 
-            server.dispatcher = connection.playStrean(ytdl(server.queue[0], {filter: "audioonly"}));
-
-            server.queue.shift();
-
-            server.dispatcher.on("end", function(){
-                if (server.queue[0]) {
-                    play(connection, message);
-                }
-                else {
-                    connection.disconnect();
-                }
-            })
+        const songInfo = await ytdl.getInfo(args[1])
+        const song = {
+            title: songInfo.title,
+            url: songInfo.video_url
         }
 
-            if (!args[1]){
-                message.channel.send("Please include a link!");
-                return;
+        if (!serverQueue){
+            const queueConstruct = {
+                textChannel: message.channel,
+                voiceChannel: voiceChannel,
+                connection: null,
+                songs: [],
+                volume: 5,
+                playing: true
             }
-            if (!message.member.voiceChannel){
-                message.channel.send("You must be in a channel to play the bot!");
-                return;
+        
+            queue.set(message.guild.id, queueConstruct);
+
+            queueConstruct.songs.push(song);
+
+            try {
+                var connection = await voiceChannel.join()
+                queueConstruct.connection = connection
+                play(message.guild, queueConstruct.songs[0])
+            } catch(error) {
+                console.log(`There was an error connecting to the voice channel: ${error}`)
+                queue.delete(message.guild.id)
+                return message.channel.send(`There was an error connecting to the voice channel: ${error}`)
             }
-            if (!Permissions.has('CONNECT')) return message.channel.send("This bot does NOT have permissions to connect to the voice channel")
-            if (!Permissions.has('SPEAK')) return message.channel.send("This bot does NOT have permissions to play sound ons the voice channel")
-
-
-
-
-
-            if (!servers[message.guild.id]) servers[message.guild.id] = {
-                queue: []
-            }
-
-            var server = servers[message.guild.id];
-
-            server.queue.push(args[1]);
-
-            if (!message.guild.voiceConnection) message.member.voiceChannel.join().then(function(connection) {
-                play(connection.message);
-            })
-        break;
-
-        case "skip":
-            var server = servers[message.guild.id];
-            if (server.dispatcher) server.dispatcher.end();
-            message.channel.send("Skipping the song!");
-        break;
-
-        case 'stop':
-            var server = servers[message.guild.id];
-            if (message.guild.voiceConnection){
-                for (var i = server.queue.length -1; i >= 0 ; i--){
-                    server.queue.splice(i,1);
-                }
-
-                server.dispatcher.end();
-                message.channel.send("Ending the queue. Leave the channel.");
-
-                console.log("stopped the queue");
-
-            }
-
-            if (message.guild.connection) message.guild.voiceConnection.disconnect();
-        break;
+        }
+        else {
+            serverQueue.songs.push(song);
+            return message.channel.send(`**${song.title}** has been added to the queue`);
+        }
+        return undefined;
     }
 
-
-    if (command === 'help')
-    {
-        message.channel.send(`This is the Help section of the Triangle's Cortana Bot. \n
-        There are few functions you can use at this time. For basic, there are this Help command, Kick command, Ban command, and PSA command. 
-        --Help Command in which focus on helping YOU understand how to utilize this bot at full usage-- 
-        --Kick and Ban Command are for more Priviledge Roles such as ADMINS and Moderators. The reason for that is to prevent member abuse Kick/Ban Command without authorization or prior review. 
-        --PSA Command sending out Announcement information that will be highly important to everyone. Thus, DO NOT abuse this command for something simple like Tagging/Mentions. Please leave this command to VP Recruitment or Moderators. \n
-
-        *** That is as much of information for help page as of right now. If you have any questions, comments, or concerns, please do address it to Admins and Moderators. ***`);
+    else if (message.content.startsWith(`${PREFIX}stop`)) {
+        if (!message.member.voice.channel) return message.channel.send("You need to be in the voice channel to stop the music")
+        if (!serverQueue) return message.channel.send("There is nothing playing")
+        serverQueue.songs = []
+        serverQueue.connection.dispatcher.end()
+        message.channel.send("I have stopped the music for you")
+        return undefined
     }
 
-    else if (command === 'psa' ) 
+    else if (message.content.startsWith(`${PREFIX}skip`)){
+        if (!message.member.voice.channel) return message.channel.send("You need to be in the voice channel to stop the music")
+        if (!serverQueue) return message.channel.send("There is nothing playing")
+        serverQueue.connection.dispatcher.end()
+        message.channel.send("I have skipped the music for you")
+        return undefined
+    }
+
+    else if (message.content.startsWith(`${PREFIX}psa`) ) 
     {
         let context = args.join(' ');
         const PSACHANNEL = bot.channels.cache.get('731657751234871316');
@@ -179,7 +159,7 @@ bot.on('message', async message => {
     }
 
     // Ban COMMAND
-    else if (command === 'ban')
+    else if (message.content.startsWith(`${PREFIX}ban`))
     {
         //If the Command kick is not in the server (DM type of message), simply return.
         //if (!message.guild) return;
@@ -228,7 +208,7 @@ bot.on('message', async message => {
     }
 
     // Kick COMMAND
-    else if (command === 'kick'){
+    else if (message.content.startsWith(`${PREFIX}kick`)){
         //If the Command kick is not in the server (DM type of message), simply return.
         //if (!message.guild) return;
 
@@ -279,6 +259,27 @@ bot.on('message', async message => {
     else{
         message.channel.send('Not Recognized Command. Please use >help for manual.');
     }
+
+    
+    function play(guild, song) {
+        const serverQueue = queue.get(guild.id)
+
+        if (!song) {
+            serverQueue.voiceChannel.leave()
+            queue.delete(guild.id)
+            return
+        }
+
+        const dispatcher = serverQueue.connection.play(ytdl(song.url))
+        .on('finish', () => {
+            serverQueue.songs.shift()
+            play(guild, serverQueue.songs[0])
+        })
+        .on('error', error => {
+            console.log(error)
+        })
+        dispatcher.setVolumeLogarithmic(serverQueue.volume/5)
+    }
 })
 
 //BASIC logs for server diagnose/information
@@ -290,4 +291,4 @@ bot.on('guildMemberRemove', member => {
     console.log('User *' + member.user.username + "* has left the server!");
 });
 
-bot.login("NjM1OTg0OTkwMzU3OTQ2Mzc5.XsipuQ.t_0LsY0E2uDsm9ptOrGdXY5I0oU"); 
+bot.login("NzEzNjEyNzU4NjQ5NjY3NjA0.Xsipqw.EnyBr392FNMxCLgJTFeLKVr-xbs"); 

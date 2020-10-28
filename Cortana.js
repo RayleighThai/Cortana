@@ -14,9 +14,9 @@ bot.on('ready', () => {
     //bot.user.setActivity('ReEeEeEeE' );
     const activities_list = [
         "with the configurations.", 
-        "with the developers console - Ask Ray/Thuan.",
-        "with some code.", 
-        "with JavaScript with Ray/Thuan",
+        "with bids. For futher information, please contact our VP Recruitment!",
+        "with some codes.", 
+        "Something",
         "with Green's Theorem",
         "with Thermo Dynamics",
         "with Steel Construction Manual."
@@ -81,8 +81,11 @@ bot.on('message', async message => {
 
     if (!message.content.startsWith(PREFIX) || message.author.bot) return;
     
+    const args = message.content;
 
-    const args = message.content.substring(PREFIX.length).split(" ")
+    const AudioBotContext = args.substring(PREFIX.length).split(" ");
+
+    // console.log(AudioBotContext);
 
     const voiceChannel = message.member.voice.channel;
     const serverQueue = queue.get(message.guild.id);
@@ -96,7 +99,7 @@ bot.on('message', async message => {
         if (!permissions.has('CONNECT')) return message.channel.send("I Do NOT have permissions to connect to the voice channel")
         if (!permissions.has('SPEAK')) return message.channel.send("I Do NOT have permissions to speak on the voice channel")
 
-        const songInfo = await ytdl.getInfo(args[1])
+        const songInfo = await ytdl.getInfo(AudioBotContext[1])
         const song = {
             title: songInfo.title,
             url: songInfo.video_url
@@ -150,16 +153,23 @@ bot.on('message', async message => {
         return undefined
     }
 
-    else if (message.content.startsWith(`${PREFIX}psa`) ) 
+    const ServerStuffs = args.slice(PREFIX.length).trim().split(/ +/g);
+    // console.log(ServerStuffs);
+    const command = ServerStuffs.shift().toLowerCase();
+
+
+
+    if (command === 'psa')
     {
-        let context = args.join(' ');
-        const PSACHANNEL = bot.channels.cache.get('731657751234871316');
+        let context = ServerStuffs.join(' ');
+       // const PSACHANNEL = bot.channels.cache.get('731657751234871316'); // This is Triangle Announcement Page
+        const PSACHANNEL = bot.channels.cache.get('745506758671335456'); // This is the Test Server
         PSACHANNEL.send({files: ['./image/Announment_Banner.png']}).then(message => {
             PSACHANNEL.send(context)});
     }
 
     // Ban COMMAND
-    else if (message.content.startsWith(`${PREFIX}ban`))
+    else if (command === 'ban')
     {
         //If the Command kick is not in the server (DM type of message), simply return.
         //if (!message.guild) return;
@@ -208,7 +218,8 @@ bot.on('message', async message => {
     }
 
     // Kick COMMAND
-    else if (message.content.startsWith(`${PREFIX}kick`)){
+    else if (command === 'kick')
+    {
         //If the Command kick is not in the server (DM type of message), simply return.
         //if (!message.guild) return;
 
@@ -292,3 +303,8 @@ bot.on('guildMemberRemove', member => {
 });
 
 bot.login("NzEzNjEyNzU4NjQ5NjY3NjA0.Xsipqw.EnyBr392FNMxCLgJTFeLKVr-xbs"); 
+
+
+
+// Cortana token is : NjM1OTg0OTkwMzU3OTQ2Mzc5.Xa5BLQ.erlFJs1OZtJOwOTiTqw1tmvKzhY
+// Development bot token is : NzEzNjEyNzU4NjQ5NjY3NjA0.Xsipqw.EnyBr392FNMxCLgJTFeLKVr-xbs

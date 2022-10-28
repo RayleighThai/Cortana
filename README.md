@@ -2,6 +2,10 @@
 
 This is a simple DiscordBot created by me, Ray T, so don't expect anything fancy. This bot is constructed over the Summer of 2020 by request of brother Tucker to reach out to more PNMs for the recruitment. I take on the challenge as try on JavaScript in freetime. The bot is not perfect as this is the first JavaScript, DiscordJs I developed. Feel free to reach out for any questions but most of the code have explanation note included explain what it does. 
 
+## UPDATE (10/28/2022)
+- This will be the last update for the Cortana Bot as I am taken out the Token of the Bot and Servers information to prevent anything information regard to Server leakage or unnecessary personnel join the Server. 
+- RIP Cortana Discord Bot 10/28/2022
+
 ## Description
 Simple bot take on administrative commands (later on added audio bot by request). 
 

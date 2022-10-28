@@ -64,7 +64,7 @@ bot.on('message', async message => {
 
     // Check for Bad words.
     /* Since this is too highly enforced. Moderators will be checking the server comments. GOOD LUCK to Y'all LOL!
-    const BADWORDS = ['fuck', 'shit', 'cunt', 'retard']  // Don't ask me. I suck at cussing so These are common words for me.
+    const BADWORDS = ['/*Insert Bad Words Here*']  // Don't ask me. I suck at cussing so These are common words for me.
     if ( BADWORDS.some(word => message.content.toLowerCase().includes(word)) ){
         message.delete().then(msg => console.log('deleted from ')).catch(console.error);
         message.reply('careful');
@@ -162,8 +162,8 @@ bot.on('message', async message => {
     if (command === 'psa')
     {
         let context = ServerStuffs.join(' ');
-       // const PSACHANNEL = bot.channels.cache.get('731657751234871316'); // This is Triangle Announcement Page
-        const PSACHANNEL = bot.channels.cache.get('745506758671335456'); // This is the Test Server
+       // const PSACHANNEL = bot.channels.cache.get('/*Insert Channel Page Here*/'); // This is Triangle Announcement Page
+        const PSACHANNEL = bot.channels.cache.get('/*Insert Channel Page Here*/'); // This is the Test Server
         PSACHANNEL.send({files: ['./image/Announment_Banner.png']}).then(message => {
             PSACHANNEL.send(context)});
     }
@@ -302,9 +302,9 @@ bot.on('guildMemberRemove', member => {
     console.log('User *' + member.user.username + "* has left the server!");
 });
 
-bot.login("NzEzNjEyNzU4NjQ5NjY3NjA0.Xsipqw.EnyBr392FNMxCLgJTFeLKVr-xbs"); 
+bot.login("/*Insert BOT Token Here*/"); 
 
 
 
-// Cortana token is : NjM1OTg0OTkwMzU3OTQ2Mzc5.Xa5BLQ.erlFJs1OZtJOwOTiTqw1tmvKzhY
-// Development bot token is : NzEzNjEyNzU4NjQ5NjY3NjA0.Xsipqw.EnyBr392FNMxCLgJTFeLKVr-xbs
+// Cortana token is : /*Taken out for Security Aspect*/
+// Development bot token is : /*Taken out for Security Aspect*/
